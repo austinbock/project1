@@ -1,0 +1,30 @@
+Data is a time series of runs where some runs are critical (have an 'Error' measured) and non-critical (no 'Error' is available or applicable).
+
+Goal:
+    establish if there is any correlation between "feature"/"attribute" (or combination of features/attributes) running just before any particular lot that drives the probability of larger abs value of Error.  
+
+
+Entity: string
+    individual toolset for that data point.  Each tool is unqiue but a copy exactly of the others so that each tool in the 
+    fleet produces the same effect.
+
+Run_On_Ent: integer
+    the sequential run on that specific entity.  The sequence matters!
+
+Lot: string
+    The name/identifier of that run
+
+Operation: int
+    Operation associated w that particular run 
+
+Error: float
+    Key parameter for the analysis.  Error can be both positive or negative.  Run is critical if Error is available.  NaN means no value is applicable or available.
+
+Feature1-4: int or float
+    unique features of that run
+
+Attribute1-5: boolean
+    represent physical materials present on that run
+
+Fam_Type/DIC_Design: string
+    description of the type of critical run - has an Error value associated with it
