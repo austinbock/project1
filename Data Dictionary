@@ -1,7 +1,11 @@
 Data is a time series of runs where some runs are critical (have an 'Error' measured) and non-critical (no 'Error' is available or applicable).
 
 Goal:
-    establish if there is any correlation between "feature"/"attribute" (or combination of features/attributes) running just before any particular lot that drives the probability of larger abs value of Error.  
+    Establish if there is any correlation between "feature"/"attribute" (or combination of features/attributes) running just 
+    before any particular lot that drives the probability of larger abs value of Error.  This is directly from the customer who 
+    wants to know if there are any set of conditions that increase the likelihood of producing a larger "Error" on a critical plate.  
+    Knowing these conditions would allow for the develpment of run rules to prevent running conditions/combinations that increase this
+    likelihood.
 
 
 Entity: string
@@ -18,7 +22,9 @@ Operation: int
     Operation associated w that particular run 
 
 Error: float
-    Key parameter for the analysis.  Error can be both positive or negative.  Run is critical if Error is available.  NaN means no value is applicable or available.
+    Key parameter for the analysis.  Can we predict a larger/smaller Error on a run (n) given the lots that ran just before it (n-1,n-2,...
+    n-j, where j = how far back in runs to look)?  Error can be both positive or negative.  Run is critical if Error is available.  
+    NaN means no value is applicable or available.
 
 Feature1-4: int or float
     unique features of that run
