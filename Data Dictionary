@@ -34,3 +34,18 @@ Attribute1-5: boolean
 
 Fam_Type/DIC_Design: string
     description of the type of critical run - has an Error value associated with it
+--------------------------------------------------------------------------------------------------    
+Data Wrangling Notations:
+Data was obtained from an SQL database of process data and a seperate MySQL pull for the historical timeline of process tools.  The data 
+then joined in JMP to created on coherent file of time series for each toolset.
+Process expert then performed an analysis of each line item by assigning features and attributes to each run based upon known 
+conditions.
+The time series nature of the dataset warrants leave NaN values in the dataset to allow time lagging functions.  The NaN values will 
+then be dropped and compared agaist an expanded dataframe with includes each attr/feature lag as a unique column.
+
+IP exposure prevention:
+To allow sharing of the dataset, all date/timestamps were removed and converted to a new sequential column called
+'Run_On_Ent'.  This was required to prevent exposure of factory metrics.
+The Error columns were also normalized to also hide sensitive data.
+
+
