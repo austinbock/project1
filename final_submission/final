@@ -34,7 +34,7 @@ strong indicator for increased absolute Error (Namely 910010 material attribute 
 to get the heatmap (wavelength/intensity as function of time) and incorporate the previous runs heatmaps into the analysis, likely with
 SVM and PCA.
 
-The final work done on the dataset was to attempt several ML regression techniques on the lagged dataset.  This was accomplished by 
+  The final work done on the dataset was to attempt several ML regression techniques on the lagged dataset.  This was accomplished by 
 first "1 hot encoding" the first 5 lags of combinated features/attributes.  Once encoding the data was split into training and test sets.  
 The training was used to with cross validation to check several linear regression models (linear, SGD, Lasso, and Ridge regressors) 
 and more complicated ensemble models (Random Forest, SVM, and kNN) which were optimized using GridSearchCV.  
