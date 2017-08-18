@@ -1,1 +1,40 @@
+The client for this project is an anonymous manufacturing company that utilizes a plasma etch process tool to define a critical 
+patterning that is measured against an expected requirement specification.  The measured delta to expected is defined as "Error".
+The goal is to establish if there is any correlation between "feature"/"attribute" (or combination of features/attributes) running just 
+before any particular lot that drives the probability of larger abs value of Error.  The customer wants to know if there are any set 
+of conditions that increase the likelihood of producing a larger "Error" on a critical plate.  Knowing these conditions would allow for 
+the develpment of run rules to prevent running conditions/combinations that increase this likelihood.  A secondary goal would be to 
+determine if there is any model that can be used to predict error from the features/attributes of previous runs (lag 1, lag 2,..., lag n).
+A key factor in this analysis is that outside sources of noise on the process line are not available here so the analysis will assume the 
+to be negligible, however this may not be true.
 
+  All date/timestamps were removed and converted to a new sequential column called 'Run_On_Ent'.  This was required to prevent exposure 
+of factory metrics but retains the necessary sequential information required for this time series.  The Error columns were also 
+normalized to also hide sensitive data.  Data was obtained from an SQL database of 
+process data and a seperate MySQL pull for the historical timeline of process tools.  The data then joined in JMP to created on coherent
+time series for each toolset.  Process expert then performed an analysis of each line item by assigning features and attributes 
+to each run based upon known conditions.  The time series nature of the dataset warrants leave NaN values in the dataset to allow time 
+lagging functions.  After converting the data into a pandas dataframe, it was then run through a lagging function which creates a new lagged column for 
+each feature along every row.  All the NaN error rows can then be dropped as the information from lagged plates is contained as new columns
+in that row.  Once complete, the data is ready for analysis.
+ 
+  First attempts were to explore the data were to calculate the most important features by calculating Welch's Cross Power Spectral 
+Density weighted Coherence.  The weighted Coh did not yield any useful information as the most important lag features/attributes were 
+very long range lags which are nonsensical.  This may be due to overlap of single attributes/features across multiple types of products 
+running.  
+
+  To explore the features/attributes further, the data was wrangled again by treating the combination of all attributes and all 
+features together as single concatenations of features/attributes. This is expected to help with the data overlap when treating each 
+one seperately.  A comprehensive data exploration was then performed to find statistically meaningful combinations of features/attributes
+that increase absolute error by use of Tukey's Honestly Significant Differences test (TukeyHSD) at each of the earlier lags (n <= 5).
+
+  Initial findings suggest that no real feature or attribute drives Error but we did find that a fairly 
+strong indicator for increased absolute Error (Namely 910010 material attribute combination at either a lag2, lag3, or lag4) is present.
+(insert a plot for this effect over the first 5 lags).  Another highly useful dataset to incorporate into this analysis would be
+to get the heatmap (wavelength/intensity as function of time) and incorporate the previous runs heatmaps into the analysis, likely with
+SVM and PCA.
+
+The final work done on the dataset was to attempt several ML regression techniques on the lagged dataset.  This was accomplished by 
+first "1 hot encoding" the first 5 lags of combinated features/attributes.  Once encoding the data was split into training and test sets.  
+The training was used to with cross validation to check several linear regression models (linear, SGD, Lasso, and Ridge regressors) 
+and more complicated ensemble models (Random Forest, SVM, and kNN) which were optimized using GridSearchCV.  
